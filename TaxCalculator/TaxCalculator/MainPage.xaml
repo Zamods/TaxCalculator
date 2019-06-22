@@ -2,13 +2,84 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:TaxCalculator"
+             xmlns:viewModel="clr-namespace:TaxCalculator.ViewModel"
              x:Class="TaxCalculator.MainPage">
+    <ContentPage.BindingContext>
+        <viewModel:PKVehCalculationViewModel />
+    </ContentPage.BindingContext>
 
-    <StackLayout>
-        <!-- Place new controls here -->
-        <Label Text="Welcome to Xamarin.Forms!" 
-           HorizontalOptions="Center"
-           VerticalOptions="CenterAndExpand" />
-    </StackLayout>
+    <ScrollView>
+        
+    <Grid Padding="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="3*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="3.5*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <StackLayout Grid.Row="0" HorizontalOptions="Center" VerticalOptions="Center">
+            <Label Text="Factory Car price"/>
+            <Entry Text="{Binding VehFactoryPrice}" Keyboard="Numeric"/>
+        </StackLayout>
+
+        <StackLayout Grid.Row="1" HorizontalOptions="Center" VerticalOptions="Center">
+            <Label Text="Incidental Costs" FontSize="Large"/>
+            <Label Text="Value of optional / additional accessories"/>
+            <Entry Text="{Binding VehIncidentalCostAddOpt}" Keyboard="Numeric"/>
+            <Label Text="Local agent's comission"/>
+            <Entry Text="{Binding VehIncidentalCostAgentFee}" Keyboard="Numeric"/>
+            <Label Text="Freight from country originally exported"/>
+            <Entry Text="{Binding VehIncidentalCostFreight}" Keyboard="Numeric"/>
+            <Label Text="Insurance from country originally exported"/>
+            <Entry Text="{Binding VehIncidentalCostInsurance}" Keyboard="Numeric"/>
+            <Label Text="Other Costs"/>
+            <Entry Text="{Binding VehIncidentalCostOther}" Keyboard="Numeric"/>
+        </StackLayout>
+
+        <StackLayout Grid.Row="2" HorizontalOptions="Center" VerticalOptions="Center">
+            <Label Text="Date of first Registration abroad"/>
+            <DatePicker Date="{Binding VehDateOfRegistration}" />
+        </StackLayout>
+
+        <StackLayout Grid.Row="3" HorizontalOptions="Center" VerticalOptions="Center">
+            <Label Text="Date of Entry in to Pakistan"/>
+            <DatePicker Date="{Binding VehDateOfArrival}" />
+        </StackLayout>
+
+        <StackLayout Grid.Row="4" HorizontalOptions="Center" VerticalOptions="Center">
+            <Label Text="Purchase Car price"/>
+                <Entry Text="{Binding VehPurchasePrice}" Keyboard="Numeric">
+                    
+                </Entry>
+            </StackLayout>
+
+        <StackLayout Grid.Row="5" HorizontalOptions="Center" VerticalOptions="Center">
+            <Label Text="Auto Calculated Fields" FontSize="Large"/>
+            <Label Text="Total Import Cost"/>
+            <Label Text="{Binding VehTotalImportCost}" />
+            <Label Text="Depreciation"/>
+            <Label Text="{Binding VehDepreciationValue}" />
+            <Label Text="Custom Duty"/>
+            <Label Text="{Binding VehCustomDutyValue}" />
+            <Label Text="Sales Tax"/>
+            <Label Text="{Binding VehSalesTaxValue}" />
+            <Label Text="Income Tax"/>
+            <Label Text="{Binding VehIncomeTaxValue}"/>
+            <Label Text="Excise Tax"/>
+            <Label Text="{Binding VehExciseDutyValue}" />
+            <Label Text="Total Tax"/>
+            <Label Text="{Binding VehTotalTaxAmount}" />
+            <Label Text="Total Tax + Purchase Price"/>
+            <Label Text="{Binding VehTotalCost}" />
+        </StackLayout>
+
+    </Grid>
+    </ScrollView>
 
 </ContentPage>
