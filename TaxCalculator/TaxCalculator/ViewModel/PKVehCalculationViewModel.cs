@@ -1,8 +1,41 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿/*
+ * Used Vehicle Import Calculation Logic
+ * 
+ * User provides Factory price 
+ * ---> VehFactoryPrice
+ * 
+ * User provides these incidental costs (VehIncidentalCostAddOpt + VehIncidentalCostAgentFee + VehIncidentalCostFreight)
+ * ---> C%F Value = VehFactoryPrice + (VehIncidentalCostAddOpt + VehIncidentalCostAgentFee + VehIncidentalCostFreight)
+ * 
+ * If User has insurance then add up in C&F value else add 1% C&F value. 
+ * ---> CIF = C&F + insurance or CIF = C&F + (C&F * PakistanCountryModel.InsuranceOnCFPercent)
+ * 
+ * Then Calculate landing charges on CIF value which is 1%
+ * ---> VehValueAssessedToTax = CIF + (CIF * PakistanCountryModel.LandingChargeCIFPercent) + VehIncidentalCostOther " + (C&F * PakistanCountryModel.DomesticModelCFPercent)" ---> If domestic model
+ * 
+ * Now, Calculate Depreciation which is 1% for 1 month to maximum 50%
+ * ---> timeInterval = VehDateOfArrival - VehDateOfRegistration
+ * ---> months = timeInterval.Days / 30
+ * ---> VehDepreciationValue = VehValueAssessedToTax * ( months / 100)
+ * 
+ * Now, Calculate Custom Duty
+ * ---> VehTaxableValue = VehValueAssessedToTax - VehDepreciationValue
+ * 
+ * Now, Calculate taxes
+ * ---> VehCustomDutyValue = VehTaxableValue;
+ * ---> VehSalesTaxValue = ( VehTaxableValue + VehCustomDutyValue ) * PakistanCountryModel.SalesTaxPercent;
+ * ---> VehIncomeTaxValue = ( VehTaxableValue + VehCustomDutyValue + VehSalesTaxValue) * PakistanCountryModel.IncomeTaxPercent
+ * ---> VehExciseDutyValue = ( VehTaxableValue + VehCustomDutyValue ) * PakistanCountryModel.ExciseDutyPercent
+ * 
+ * Now, Total Tax
+ * ---> VehTotalTaxAmount = VehCustomDutyValue + VehSalesTaxValue + VehIncomeTaxValue + VehExciseDutyValue
+ * 
+ * Now, Total Cost
+ * ---> VehTotalCost = VehPurchasePrice + VehTotalTaxAmount
+ */
+
+using System;
 using TaxCalculator.Model;
-using Xamarin.Forms;
 
 namespace TaxCalculator.ViewModel
 {
@@ -12,159 +45,12 @@ namespace TaxCalculator.ViewModel
         public PKVehCalculationModel _pKVehCalculation;
         #endregion
 
-        #region PKVehCalculationModel Properties Getters or Setters
-
-        #region Properties related to calculate Custom Duty
-
-        public double VehFactoryPrice
-        {
-            get => _pKVehCalculation.VehFactoryPrice;
-            set
-            {
-                if (SetProperty(ref _pKVehCalculation.VehFactoryPrice, value, "VehFactoryPrice"))
-                {
-                    VehCustomDutyValue = CalculateTotalCustomDuty();
-                }
-            }
-        }
-
-        public double VehCustomDutyValue
-        {
-            get => _pKVehCalculation.VehCustomDutyValue;
-            private set
-            {
-                if (SetProperty(ref _pKVehCalculation.VehCustomDutyValue, value, "VehCustomDutyValue"))
-                {
-                    VehTotalTaxAmount = CalculateTotalTaxAmount();
-                }
-            }
-        }
-
-        #region Properties Related to calculate Total Import Cost
-
-        public double VehIncidentalCostAddOpt
-        {
-            get => _pKVehCalculation.VehIncidentalCostAddOpt;
-            set
-            {
-                if (SetProperty(ref _pKVehCalculation.VehIncidentalCostAddOpt, value, "VehIncidentalCostAddOpt"))
-                {
-                    VehTotalImportCost = CalculateTotalImportCost();
-                }
-            }
-        }
-
-        public double VehIncidentalCostAgentFee
-        {
-            get => _pKVehCalculation.VehIncidentalCostAgentFee;
-            set
-            {
-                if (SetProperty(ref _pKVehCalculation.VehIncidentalCostAgentFee, value, "VehIncidentalCostAgentFee"))
-                {
-                    VehTotalImportCost = CalculateTotalImportCost();
-                }
-            }
-        }
-
-        public double VehIncidentalCostFreight
-        {
-            get => _pKVehCalculation.VehIncidentalCostFreight;
-            set
-            {
-                if (SetProperty(ref _pKVehCalculation.VehIncidentalCostFreight, value, "VehIncidentalCostFreight"))
-                {
-                    VehTotalImportCost = CalculateTotalImportCost();
-                }
-            }
-        }
-
-        public double VehIncidentalCostInsurance
-        {
-            get => _pKVehCalculation.VehIncidentalCostInsurance;
-            set
-            {
-                if (SetProperty(ref _pKVehCalculation.VehIncidentalCostInsurance, value, "VehIncidentalCostInsurance"))
-                {
-                    VehTotalImportCost = CalculateTotalImportCost();
-                }
-            }
-        }
-
-        public double VehIncidentalCostOther
-        {
-            get => _pKVehCalculation.VehIncidentalCostOther;
-            set
-            {
-                if (SetProperty(ref _pKVehCalculation.VehIncidentalCostOther, value, "VehIncidentalCostOther"))
-                {
-                    VehTotalImportCost = CalculateTotalImportCost();
-                }
-            }
-        }
-
-        public double VehTotalImportCost
-        {
-            get => _pKVehCalculation.VehTotalImportCost;
-            private set
-            {
-                if(SetProperty(ref _pKVehCalculation.VehTotalImportCost, value, "VehTotalImportCost"))
-                {
-                    VehDepreciationValue = CalculateDepreciationValue();
-                    VehCustomDutyValue = CalculateTotalCustomDuty();
-                } 
-            }
-        }
-
-        #region Properties related to Depreciation Calculation
-
-        public double VehDepreciationValue
-        {
-            get => _pKVehCalculation.VehDepreciationValue;
-            private set
-            {
-                if(SetProperty(ref _pKVehCalculation.VehDepreciationValue, value, "VehDepreciationValue"))
-                {
-                    VehCustomDutyValue = CalculateTotalCustomDuty();
-                }
-            }
-        }
-
-        public DateTime VehDateOfRegistration
-        {
-            get => _pKVehCalculation.VehDateOfRegistration;
-            set
-            {
-                if(SetProperty(ref _pKVehCalculation.VehDateOfRegistration, value, "VehDateOfRegistration"))
-                {
-                    VehDepreciationValue = CalculateDepreciationValue();
-                }
-            }
-        }
-
-        public DateTime VehDateOfArrival
-        {
-            get => _pKVehCalculation.VehDateOfArrival;
-            set
-            {
-                if(SetProperty(ref _pKVehCalculation.VehDateOfArrival, value, "VehDateOfArrival"))
-                {
-                    VehDepreciationValue = CalculateDepreciationValue();
-                }
-            }
-        }
-
-        #endregion
-
-        #endregion
-
-        #endregion
-
-        #region Properties to Calculate Total Tax Amount
+        #region Properties Related to calculate Tax
 
         public double VehSalesTaxValue
         {
             get => _pKVehCalculation.VehSalesTaxValue;
-            private set => SetProperty(ref _pKVehCalculation.VehSalesTaxValue, value , "VehSalesTaxValue");
+            private set => SetProperty(ref _pKVehCalculation.VehSalesTaxValue, value, "VehSalesTaxValue");
         }
 
         public double VehIncomeTaxValue
@@ -179,30 +65,131 @@ namespace TaxCalculator.ViewModel
             private set => SetProperty(ref _pKVehCalculation.VehExciseDutyValue, value, "VehExciseDutyValue");
         }
 
-        public double VehTotalTaxAmount
+        #region Properties Related to Custom Duty
+
+        public double VehCustomDutyValue
         {
-            get => _pKVehCalculation.VehTotalTaxAmount;
-            private set
-            {
-                if (SetProperty(ref _pKVehCalculation.VehTotalTaxAmount, value, "VehTotalTaxAmount"))
-                {
-                    VehTotalCost = CalculateVehicleTotalCost();
-                }
-            }
+            get => _pKVehCalculation.VehCustomDutyValue;
+            private set => SetProperty(ref _pKVehCalculation.VehCustomDutyValue, value, "VehCustomDutyValue");
+        }
+
+        public double VehTaxableValue
+        {
+            get => _pKVehCalculation.VehTaxableValue;
+            private set => SetProperty(ref _pKVehCalculation.VehTaxableValue, value, "VehTaxableValue");
+        }
+
+        #region Variables Related to Calculate Value Assessed
+
+        public double VehValueAssessedToTax
+        {
+            get => _pKVehCalculation.VehValueAssessedToTax;
+            private set => SetProperty(ref _pKVehCalculation.VehValueAssessedToTax, value, "VehValueAssessedToTax");
+        }
+
+        public double VehIncidentalCostOther
+        {
+            get => _pKVehCalculation.VehIncidentalCostOther;
+            set => SetProperty(ref _pKVehCalculation.VehIncidentalCostOther, value, "VehIncidentalCostOther");
+        }
+
+        public double VehCIFValue
+        {
+            get => _pKVehCalculation.VehCIFValue;
+            private set => SetProperty(ref _pKVehCalculation.VehCIFValue, value, "VehCIFValue");
+        }
+
+        public double VehCFValue
+        {
+            get => _pKVehCalculation.VehCFValue;
+            private set => SetProperty(ref _pKVehCalculation.VehCFValue, value, "VehCFValue");
+        }
+
+        public double VehLandingCharge
+        {
+            get => _pKVehCalculation.VehLandingCharge;
+            private set => SetProperty(ref _pKVehCalculation.VehLandingCharge, value, "VehLandingCharge");
+        }
+
+        #region Properties Related to calculate C&F value 
+
+        public double VehFactoryPrice
+        {
+            get => _pKVehCalculation.VehFactoryPrice;
+            set => SetProperty(ref _pKVehCalculation.VehFactoryPrice, value, "VehFactoryPrice");
+        }
+
+        public double VehIncidentalCostAddOpt
+        {
+            get => _pKVehCalculation.VehIncidentalCostAddOpt;
+            set => SetProperty(ref _pKVehCalculation.VehIncidentalCostAddOpt, value, "VehIncidentalCostAddOpt");
+        }
+
+        public double VehIncidentalCostAgentFee
+        {
+            get => _pKVehCalculation.VehIncidentalCostAgentFee;
+            set => SetProperty(ref _pKVehCalculation.VehIncidentalCostAgentFee, value, "VehIncidentalCostAgentFee");
+        }
+
+        public double VehIncidentalCostFreight
+        {
+            get => _pKVehCalculation.VehIncidentalCostFreight;
+            set => SetProperty(ref _pKVehCalculation.VehIncidentalCostFreight, value, "VehIncidentalCostFreight");
+        }
+
+        # region Properties Related to calculate CIF value
+
+        public double VehIncidentalCostInsurance
+        {
+            get => _pKVehCalculation.VehIncidentalCostInsurance;
+            set => SetProperty(ref _pKVehCalculation.VehIncidentalCostInsurance, value, "VehIncidentalCostInsurance");
         }
 
         #endregion
 
+        #endregion
+
+
+        #endregion
+
+        #region Properties Related to calculate Depreciation Value
+
+        public double VehDepreciationValue
+        {
+            get => _pKVehCalculation.VehDepreciationValue;
+            private set => SetProperty(ref _pKVehCalculation.VehDepreciationValue, value, "VehDepreciationValue");
+        }
+
+        public DateTime VehDateOfRegistration
+        {
+            get => _pKVehCalculation.VehDateOfRegistration;
+            set => SetProperty(ref _pKVehCalculation.VehDateOfRegistration, value, "VehDateOfRegistration");
+        }
+
+        public DateTime VehDateOfArrival
+        {
+            get => _pKVehCalculation.VehDateOfArrival;
+            set => SetProperty(ref _pKVehCalculation.VehDateOfArrival, value, "VehDateOfArrival");
+        }
+
+        #endregion
+
+        #endregion
+
+        #endregion
+
+        #region Properties to Calculation Total Cost + Tax
+
+        public double VehTotalTaxAmount
+        {
+            get => _pKVehCalculation.VehTotalTaxAmount;
+            private set => SetProperty(ref _pKVehCalculation.VehTotalTaxAmount, value, "VehTotalTaxAmount");
+        }
+
         public double VehPurchasePrice
         {
             get => _pKVehCalculation.VehPurchasePrice;
-            set
-            {
-                if(SetProperty(ref _pKVehCalculation.VehPurchasePrice, value, "VehPurchasePrice"))
-                {
-                    VehTotalCost = CalculateVehicleTotalCost();
-                }
-            } 
+            set => SetProperty(ref _pKVehCalculation.VehPurchasePrice, value, "VehPurchasePrice");
         }
 
         public double VehTotalCost
@@ -211,73 +198,168 @@ namespace TaxCalculator.ViewModel
             private set => SetProperty(ref _pKVehCalculation.VehTotalCost, value, "VehTotalCost");
         }
 
+
         #endregion
 
-        #region Local methods for handling logical calculations
+        #region Other Properties
 
-        private double CalculateVehicleTotalCost()
+        public bool IsInsured
         {
-            return _pKVehCalculation.VehPurchasePrice + _pKVehCalculation.VehTotalTaxAmount;
-        }
-
-        private double CalculateDepreciationValue()
-        {
-            var timeInterval = (VehDateOfArrival.Date >= VehDateOfRegistration) ? VehDateOfArrival - VehDateOfRegistration : TimeSpan.Zero;
-            var months = timeInterval.Days / 30;
-            var depreciateableMonths = (months > PakistanCountryModel.MaxAllowedDepreciation) ? PakistanCountryModel.MaxAllowedDepreciation : months;
-            return (_pKVehCalculation.VehFactoryPrice + _pKVehCalculation.VehTotalImportCost) * ((double)depreciateableMonths / 100);
+            get => _pKVehCalculation.IsInsured;
+            set => SetProperty(ref _pKVehCalculation.IsInsured, value, "IsInsured");
         }
 
-        private double CalculateTotalImportCost()
+        public bool IsDomestic
         {
-            return _pKVehCalculation.VehIncidentalCostAddOpt + _pKVehCalculation.VehIncidentalCostAgentFee
-                 + _pKVehCalculation.VehIncidentalCostFreight + _pKVehCalculation.VehIncidentalCostInsurance
-                 + _pKVehCalculation.VehIncidentalCostOther;
+            get => _pKVehCalculation.IsDomestic;
+            set => SetProperty(ref _pKVehCalculation.IsDomestic, value, "IsDomestic");
         }
 
-        private double CalculateTotalCustomDuty()
+        public bool IsNew
         {
-            return (_pKVehCalculation.VehFactoryPrice + _pKVehCalculation.VehTotalImportCost) - _pKVehCalculation.VehDepreciationValue;
-        }
-        
-        private double CalculateSalesTaxAmount()
-        {
-            return VehSalesTaxValue = (_pKVehCalculation.VehFactoryPrice + _pKVehCalculation.VehCustomDutyValue) * PakistanCountryModel.SalesTaxPercent;
+            get => _pKVehCalculation.IsNew;
+            set => SetProperty(ref _pKVehCalculation.IsNew, value, "IsNew");
         }
 
-        private double CalculateIncomeTaxAmount()
-        {
-            return VehIncomeTaxValue = (_pKVehCalculation.VehFactoryPrice + _pKVehCalculation.VehCustomDutyValue + _pKVehCalculation.VehSalesTaxValue) * PakistanCountryModel.IncomeTaxPercent;
-        }
-
-        private double CalculateExciseDutyAmount()
-        {
-            return VehExciseDutyValue = (_pKVehCalculation.VehFactoryPrice + _pKVehCalculation.VehCustomDutyValue) * PakistanCountryModel.ExciseDutyPercent;
-        }
-
-        private double CalculateTotalTaxAmount()
-        {
-            return _pKVehCalculation.VehCustomDutyValue + CalculateSalesTaxAmount() + CalculateIncomeTaxAmount() + CalculateExciseDutyAmount();
-        }
         #endregion
 
         public PKVehCalculationViewModel()
         {
             _pKVehCalculation = new PKVehCalculationModel();
-            PerformCalculations(ref _pKVehCalculation);
+            this.PropertyChanged += PKVehCalculationViewModel_PropertyChanged;
         }
 
-        private void PerformCalculations(ref PKVehCalculationModel calculationModel)
+        private void PKVehCalculationViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            calculationModel.VehDepreciationValue = CalculateDepreciationValue();
-            calculationModel.VehTotalImportCost = CalculateTotalImportCost();
-            calculationModel.VehCustomDutyValue = CalculateTotalCustomDuty();
-            calculationModel.VehTotalTaxAmount = CalculateTotalTaxAmount();
-            calculationModel.VehTotalCost = CalculateVehicleTotalCost();
+            switch (e.PropertyName)
+            {
+                case "VehFactoryPrice":
+                    CalculateAssignCFValue();
+                    CalculateAssignCIFValue();
+                    break;
+
+                case "VehIncidentalCostAddOpt":
+                    CalculateAssignCFValue();
+                    CalculateAssignCIFValue();
+                    break;
+
+                case "VehIncidentalCostAgentFee":
+                    CalculateAssignCFValue();
+                    CalculateAssignCIFValue();
+                    break;
+
+                case "VehIncidentalCostFreight":
+                    CalculateAssignCFValue();
+                    CalculateAssignCIFValue();
+                    break;
+
+                case "IsInsured":
+                    CalculateAssignCIFValue();
+                    break;
+
+                case "VehIncidentalCostInsurance":
+                    CalculateAssignCIFValue();
+                    break;
+
+                case "VehIncidentalCostOther":
+                    CalculateAssignValueAssessedToTax();
+                    break;
+
+                case "IsDomestic":
+                    CalculateAssignValueAssessedToTax();
+                    break;
+
+                case "VehCIFValue":
+                    CalculateAssignValueAssessedToTax();
+                    break;
+
+                case "VehCFValue":
+                    CalculateAssignValueAssessedToTax();
+                    break;
+
+                case "VehDateOfArrival":
+                    CalculateAssignDepreciationValue();
+                    CalculateAssignTaxableValue();
+                    break;
+
+                case "VehDateOfRegistration":
+                    CalculateAssignDepreciationValue();
+                    CalculateAssignTaxableValue();
+                    break;
+
+                case "VehTaxableValue":
+                    CalculateAssignCustomDutyValue();
+                    break;
+
+                case "VehCustomDutyValue":
+                    CalculateAssignTaxValues();
+                    CalculateAssignTotalTaxesAndSumValues();
+                    break;
+
+                case "VehPurchasePrice":
+                    CalculateAssignTotalTaxesAndSumValues();
+                    break;
+            }
         }
 
-        public PropertyChangingEventHandler eventHandler;
-       
-        
+        #region Private Calculation Methods
+
+        //Step 1: Calculate C&F
+        private void CalculateAssignCFValue()
+        {
+            VehCFValue = VehFactoryPrice + (VehIncidentalCostAddOpt + VehIncidentalCostAgentFee + VehIncidentalCostFreight);
+        }
+
+        //Step 2: Calculate CIF
+        private void CalculateAssignCIFValue()
+        {
+            VehCIFValue = (IsInsured) ? VehCFValue + VehIncidentalCostInsurance : VehCFValue + (VehCFValue * PakistanCountryModel.InsuranceOnCFRate);
+        }
+
+        //Step 3: Calculate Value Assessed to tax
+        private void CalculateAssignValueAssessedToTax()
+        {
+            VehLandingCharge = VehCIFValue * PakistanCountryModel.LandingChargeCIFRate;
+            VehValueAssessedToTax = VehCIFValue + VehLandingCharge + VehIncidentalCostOther;
+            VehValueAssessedToTax = (IsDomestic) ? VehValueAssessedToTax + (VehCFValue * PakistanCountryModel.DomesticModelCFRate) : VehValueAssessedToTax;
+        }
+
+        //Step 4: Calculate Depreciation value
+        private void CalculateAssignDepreciationValue()
+        {
+            var timeInterval = (VehDateOfArrival.Date >= VehDateOfRegistration) ? VehDateOfArrival - VehDateOfRegistration : TimeSpan.Zero;
+            var months = timeInterval.Days / 30;
+            var depreciateableMonths = (months > PakistanCountryModel.MaxAllowedDepreciation) ? PakistanCountryModel.MaxAllowedDepreciation : months;
+            VehDepreciationValue = VehValueAssessedToTax * ((double)months / 100);
+        }
+
+        //Step 5: Calculate Taxable Value
+        private void CalculateAssignTaxableValue()
+        {
+            VehTaxableValue = VehValueAssessedToTax - VehDepreciationValue;
+        }
+
+        //Step 6: Calculate Custom Duty*
+        private void CalculateAssignCustomDutyValue()
+        {
+            VehCustomDutyValue = (IsNew) ? VehTaxableValue * PakistanCountryModel.GetCustomDutyRate(EngineDisplacement.ED1001cctoED1300cc) : VehTaxableValue;
+        }
+
+        //Step 7: Calculate Remaining Taxes
+        private void CalculateAssignTaxValues()
+        {
+            var sumOfTaxableCustomDuty = VehTaxableValue + VehCustomDutyValue;
+            VehSalesTaxValue = sumOfTaxableCustomDuty * PakistanCountryModel.SalesTaxRate;
+            VehIncomeTaxValue = (sumOfTaxableCustomDuty + VehSalesTaxValue) * PakistanCountryModel.IncomeTaxRate;
+            VehExciseDutyValue = sumOfTaxableCustomDuty * PakistanCountryModel.ExciseDutyRate;
+        }
+
+        //Step 8: Sum Taxes and Calculate Total Cost
+        private void CalculateAssignTotalTaxesAndSumValues()
+        {
+            VehTotalTaxAmount = VehCustomDutyValue + VehSalesTaxValue + VehIncomeTaxValue + VehExciseDutyValue;
+            VehTotalCost = VehPurchasePrice + VehTotalTaxAmount;
+        }
+        #endregion
     }
 }
