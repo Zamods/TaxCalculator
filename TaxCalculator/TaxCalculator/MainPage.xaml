@@ -12,12 +12,13 @@
         
     <Grid Padding="10">
         <Grid.RowDefinitions>
+            <RowDefinition Height=".5*"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="3*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="3.5*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height=".5*"/>
+            <RowDefinition Height=".5*"/>
+            <RowDefinition Height=".5*"/>
+            <RowDefinition Height="4*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -29,6 +30,15 @@
         </StackLayout>
 
         <StackLayout Grid.Row="1" HorizontalOptions="Center" VerticalOptions="Center">
+            <Label Text="Domestic Build?"/>
+            <Switch IsToggled="{Binding IsDomestic}"/>
+            <Label Text="Have Insurance?"/>
+            <Switch IsToggled="{Binding IsInsured}"/>
+            <Label Text="Brand New?"/>
+            <Switch IsToggled="{Binding IsNew}"/>
+        </StackLayout>
+        
+        <StackLayout Grid.Row="2" HorizontalOptions="Center" VerticalOptions="Center">
             <Label Text="Incidental Costs" FontSize="Large"/>
             <Label Text="Value of optional / additional accessories"/>
             <Entry Text="{Binding VehIncidentalCostAddOpt}" Keyboard="Numeric"/>
@@ -42,29 +52,37 @@
             <Entry Text="{Binding VehIncidentalCostOther}" Keyboard="Numeric"/>
         </StackLayout>
 
-        <StackLayout Grid.Row="2" HorizontalOptions="Center" VerticalOptions="Center">
+        <StackLayout Grid.Row="3" HorizontalOptions="Center" VerticalOptions="Center">
             <Label Text="Date of first Registration abroad"/>
             <DatePicker Date="{Binding VehDateOfRegistration}" />
         </StackLayout>
 
-        <StackLayout Grid.Row="3" HorizontalOptions="Center" VerticalOptions="Center">
+        <StackLayout Grid.Row="4" HorizontalOptions="Center" VerticalOptions="Center">
             <Label Text="Date of Entry in to Pakistan"/>
             <DatePicker Date="{Binding VehDateOfArrival}" />
         </StackLayout>
 
-        <StackLayout Grid.Row="4" HorizontalOptions="Center" VerticalOptions="Center">
+        <StackLayout Grid.Row="5" HorizontalOptions="Center" VerticalOptions="Center">
             <Label Text="Purchase Car price"/>
                 <Entry Text="{Binding VehPurchasePrice}" Keyboard="Numeric">
                     
                 </Entry>
             </StackLayout>
 
-        <StackLayout Grid.Row="5" HorizontalOptions="Center" VerticalOptions="Center">
+        <StackLayout Grid.Row="6" HorizontalOptions="Center" VerticalOptions="Center">
             <Label Text="Auto Calculated Fields" FontSize="Large"/>
-            <Label Text="Total Import Cost"/>
-            <Label Text="{Binding VehTotalImportCost}" />
+            <Label Text="CF Value"/>
+            <Label Text="{Binding VehCFValue}" />
+            <Label Text="CIF Value"/>
+            <Label Text="{Binding VehCIFValue}" />
+            <Label Text="Landing Charge Value"/>
+            <Label Text="{Binding VehLandingCharge}" />
+            <Label Text="Value Assessed to Tax"/>
+            <Label Text="{Binding VehValueAssessedToTax}" />
             <Label Text="Depreciation"/>
             <Label Text="{Binding VehDepreciationValue}" />
+            <Label Text="Taxable Value"/>
+            <Label Text="{Binding VehTaxableValue}" />
             <Label Text="Custom Duty"/>
             <Label Text="{Binding VehCustomDutyValue}" />
             <Label Text="Sales Tax"/>
