@@ -1,5 +1,5 @@
 # TaxCalculator
-TaxCalculator is an application which is developed upon object oriented design principles with MVVM architecture. This app is highly scaleable to incorporate other countries taxation but right now it only supports pakistan taxation for vehicles.
+TaxCalculator is an application which is developed upon object-oriented design principles with MVVM architecture. This app is highly scalable to incorporate other countries taxation but right now it only supports Pakistan taxation for vehicles. The goal of this development is to realize prototype design as much as possible without affecting performance.
 
 iOS
 [![Build status](https://build.appcenter.ms/v0.1/apps/c1784078-f465-4d83-8f33-73f89d145d3a/branches/master/badge)](https://appcenter.ms)
