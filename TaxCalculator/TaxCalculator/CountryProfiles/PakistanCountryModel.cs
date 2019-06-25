@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using TaxCalculator.Model;
 
-namespace TaxCalculator.Model
+namespace TaxCalculator.CountryProfiles
 {
     public class PakistanCountryModel : BaseCountryModel
     {

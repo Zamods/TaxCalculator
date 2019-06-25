@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaxCalculator.iOS", "TaxCal
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaxCalculator.UWP", "TaxCalculator\TaxCalculator.UWP\TaxCalculator.UWP.csproj", "{AAE7ECB6-C9A7-4601-811D-92752A75B68A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaxCalculator", "TaxCalculator\TaxCalculator\TaxCalculator.csproj", "{86D34810-B021-459F-912D-5C3E183FB736}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaxCalculator", "TaxCalculator\TaxCalculator\TaxCalculator.csproj", "{86D34810-B021-459F-912D-5C3E183FB736}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
