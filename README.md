@@ -5,10 +5,10 @@ TaxCalculator is an application which is developed upon object-oriented design p
 ## Master branch
 
 iOS
-[![Build status](https://build.appcenter.ms/v0.1/apps/c1784078-f465-4d83-8f33-73f89d145d3a/branches/master/badge)](https://appcenter.ms)
+[![Build Status](https://bbproj.visualstudio.com/Tax%20Calculator/_apis/build/status/Zamods.TaxCalculator%20(1)?branchName=master)](https://bbproj.visualstudio.com/Tax%20Calculator/_build/latest?definitionId=2&branchName=master)
 
 Android
-[![Build status](https://build.appcenter.ms/v0.1/apps/3b5283d6-abbf-44b4-b243-7d90ae801825/branches/master/badge)](https://appcenter.ms)
+[![Build Status](https://bbproj.visualstudio.com/Tax%20Calculator/_apis/build/status/Zamods.TaxCalculator?branchName=master)](https://bbproj.visualstudio.com/Tax%20Calculator/_build/latest?definitionId=1&branchName=master)
 
 ## Update Branch
 
