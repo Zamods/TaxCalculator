@@ -3,6 +3,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="TaxCalculator.App">
     <Application.Resources>
-
+        <Style x:Key="Heading" TargetType="Label">
+            <Setter Property="FontFamily">
+                <Setter.Value>
+                    <OnPlatform Android="SF-Pro-Display-Ultralight.otf#SF Pro Display" iOS="SF-Pro-Display-Ultralight.otf#SF Pro Display" UWP="Assets/Fonts/SF-Pro-Display-Ultralight.otf#SF Pro Display"/>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="FontSize" Value="Large"/>
+        </Style>
     </Application.Resources>
 </Application>

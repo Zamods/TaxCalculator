@@ -53,6 +53,8 @@ namespace TaxCalculator.UWP
                 rootFrame.NavigationFailed += OnNavigationFailed;
 
                 Xamarin.Forms.Forms.Init(e);
+                // Registering Dependency service to port Master Detail to UWP Platform which doesn't support Shell.
+                Xamarin.Forms.DependencyService.Register<MasterDetailUWP.MasterDetail>();
 
                 if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
                 {

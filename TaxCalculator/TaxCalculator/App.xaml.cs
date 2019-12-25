@@ -1,5 +1,7 @@
 ﻿using System;
+using TaxCalculator.MasterDetailUWP;
 using Xamarin.Forms;
+using Xamarin.Forms.PlatformConfiguration;
 using Xamarin.Forms.Xaml;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
@@ -10,8 +12,23 @@ namespace TaxCalculator
         public App()
         {
             InitializeComponent();
+            // Initialize Live Reload.
+            LiveReload.Init();
+            InitializeNavigation();
+        }
 
-            MainPage = new MainPage();
+        public static void InitializeNavigation()
+        {
+#if DEBUG
+
+#if __ANDROID__
+            Current.MainPage = new  MasterDetailShell.AppShell();
+#elif __IOS__
+            Current.MainPage = new  MasterDetailShell.AppShell();
+#else
+            Current.MainPage = DependencyService.Get<Interface.IUWPMasterDetail>().GetUWPNavigation();
+#endif
+#endif
         }
 
         protected override void OnStart()

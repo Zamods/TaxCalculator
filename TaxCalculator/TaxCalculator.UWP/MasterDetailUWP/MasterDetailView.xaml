@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:control="clr-namespace:TaxCalculator.Controls;assembly=TaxCalculator"
+             xmlns:ext="clr-namespace:TaxCalculator.Extensions;assembly=TaxCalculator"
+             x:Class="TaxCalculator.UWP.MasterDetailUWP.MasterDetailView"
+             Title="Navigation"
+             BackgroundColor="#89cff0">
+    
+    <ContentPage.Content>
+        <StackLayout>
+            <StackLayout Orientation="Horizontal" HeightRequest="180" Margin="20,10,0,0" >
+                <Image Source="Assets/Icons/Logo.png" Aspect="AspectFit" HeightRequest="100" />
+                <Label Text="Tax Calculator" Style="{StaticResource Heading}" VerticalOptions="Center" TextColor="White"/>
+            </StackLayout>
+            <BoxView BackgroundColor="White" HeightRequest="1" VerticalOptions="Start"/>
+            <ScrollView>
+                <Grid Margin="-2,0,-2,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                    <control:ModernButton ButtonText="{ext:Translate Home}"  ButtonBackgroundColor="#89cff0" ButtonTextFontColor="White" ButtonIconSource="Assets/Icons/Home.png" 
+                                      ButtonTextVerticalOptions="Center" Grid.Row="0" control:Gesture.TapCommand="{control:Command NavigateToPage, Parameter=Home}" />
+
+                    <control:ModernButton ButtonText="{ext:Translate VehicleTax}"  ButtonBackgroundColor="#89cff0" ButtonTextFontColor="White" ButtonIconSource="Assets/Icons/Vehicle.png" 
+                                      ButtonTextVerticalOptions="Center" Grid.Row="1" control:Gesture.TapCommand="{control:Command NavigateToPage, Parameter=Home}"/>
+
+                    <control:ModernButton ButtonText="{ext:Translate Settings}"  ButtonBackgroundColor="#89cff0" ButtonTextFontColor="White" ButtonIconSource="Assets/Icons/Settings.png" 
+                                  ButtonTextVerticalOptions="Center" Grid.Row="2" control:Gesture.TapCommand="{control:Command NavigateToPage, Parameter=Setting}" />
+
+                    <control:ModernButton ButtonText="{ext:Translate About}"  ButtonBackgroundColor="#89cff0" ButtonTextFontColor="White" ButtonIconSource="Assets/Icons/About.png" 
+                                      ButtonTextVerticalOptions="Center" Grid.Row="3" control:Gesture.TapCommand="{control:Command NavigateToPage, Parameter=Home}" />
+            </Grid>
+            </ScrollView>
+            <Label VerticalOptions="EndAndExpand" HorizontalOptions="Center" Text="Tax Calculator © 2019 " TextColor="White"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

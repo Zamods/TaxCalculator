@@ -35,7 +35,6 @@
  */
 
 
-using Plugin.Multilingual;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -50,7 +49,6 @@ namespace TaxCalculator.ViewModel
         #region flagged variables
         public PKVehCalculationModel _pKVehCalculation;
         private EngineDisplacement _selectedEngineDisplacement;
-        private MultilingualCulture _selectedCulture;
         #endregion
 
         #region Properties Related to calculate Tax
@@ -240,17 +238,6 @@ namespace TaxCalculator.ViewModel
             get => Enum.GetNames(typeof(EngineDisplacement)).Select(ed => ed.SplitCamelCaseToEngineDisplacementString()).ToList();
         }
 
-        public MultilingualCulture SelectedCulture
-        {
-            get => _selectedCulture;
-            set => SetProperty(ref _selectedCulture, value, "SelectedCulture");
-        }
-
-        public IList<string> CultureOptions
-        {
-            get => Enum.GetNames(typeof(MultilingualCulture)).ToList();
-        }
-
         #endregion
 
         public PKVehCalculationViewModel()
@@ -335,10 +322,6 @@ namespace TaxCalculator.ViewModel
                     CalculateAssignCustomDutyValue();
                     break;
 
-                case "SelectedCulture":
-                    CultureSelector.SelectCulture(SelectedCulture);
-                    App.Current.MainPage = new MainPage();
-                    break;
             }
         }
 

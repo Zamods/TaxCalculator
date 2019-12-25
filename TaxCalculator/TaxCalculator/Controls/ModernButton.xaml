@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:control="clr-namespace:TaxCalculator.Controls"
+             x:Class="TaxCalculator.Controls.ModernButton">
+    <ContentView.Content>
+        <Frame x:Name="ModernButtonFrame" >
+            <Grid x:Name="ModernButtonLayout" Padding="0,-12,0,-12" >
+                <Grid.RowDefinitions>
+                    <RowDefinition x:Name="ModernButtonHeight" Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition x:Name="ModernButtonIconWidth" Width="Auto"/>
+                    <ColumnDefinition x:Name="ModernButtonTextWidth" Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Image x:Name="ModernButtonIcon" Grid.Column="0" Grid.Row="0" Margin="20,0,10,0" />
+                <Label x:Name="ModernButtonText" Grid.Column="1" Grid.Row="0"  />
+            </Grid>
+        </Frame>
+    </ContentView.Content>
+</ContentView>

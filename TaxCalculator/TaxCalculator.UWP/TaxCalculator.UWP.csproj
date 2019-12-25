@@ -95,6 +95,11 @@
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MasterDetailUWP\MasterDetail.cs" />
+    <Compile Include="MasterDetailUWP\MasterDetailView.xaml.cs">
+      <DependentUpon>MasterDetailView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MasterDetailUWP\MasterDetailViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -103,9 +108,15 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\Icons\About.png" />
+    <Content Include="Assets\Icons\Home.png" />
+    <Content Include="Assets\Icons\SettingsM.png" />
+    <Content Include="Assets\Icons\Vehicle.png" />
     <Content Include="Assets\LargeTile.scale-100.png" />
     <Content Include="Assets\LargeTile.scale-200.png" />
     <Content Include="Assets\LargeTile.scale-400.png" />
+    <Content Include="Assets\Icons\Logo.png" />
+    <Content Include="Assets\Icons\Settings.png" />
     <Content Include="Assets\SmallTile.scale-100.png" />
     <Content Include="Assets\SmallTile.scale-200.png" />
     <Content Include="Assets\SmallTile.scale-400.png" />
@@ -141,6 +152,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <EmbeddedResource Include="MasterDetailUWP\MasterDetailView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Plugin.Multilingual">
@@ -148,12 +163,39 @@
     </PackageReference>
     <PackageReference Include="Xamarin.Forms" Version="4.0.0.497661" />
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform" Version="6.2.8" />
+    <PackageReference Include="Xamarin.LiveReload">
+      <Version>0.3.27</Version>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TaxCalculator\TaxCalculator.csproj">
       <Project>{69E9E900-E25D-4FA9-BE36-6A158D7491E1}</Project>
       <Name>TaxCalculator</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Assets\Fonts\SF-Pro-Display-Black.otf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Assets\Fonts\SF-Pro-Display-Heavy.otf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Assets\Fonts\SF-Pro-Display-Light.otf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Assets\Fonts\SF-Pro-Display-Medium.otf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Assets\Fonts\SF-Pro-Display-Regular.otf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Assets\Fonts\SF-Pro-Display-Semibold.otf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Assets\Fonts\SF-Pro-Display-Thin.otf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Assets\Fonts\SF-Pro-Display-Ultralight.otf" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

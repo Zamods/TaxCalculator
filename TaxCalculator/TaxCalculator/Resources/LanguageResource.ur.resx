@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="About" xml:space="preserve">
+    <value>متعلق</value>
+  </data>
   <data name="BrandNew" xml:space="preserve">
     <value>بالکل نیا؟</value>
   </data>
@@ -129,13 +132,25 @@
   <data name="HaveInsurance" xml:space="preserve">
     <value>انشورنس کیا ہے؟</value>
   </data>
+  <data name="Home" xml:space="preserve">
+    <value>گھر</value>
+  </data>
   <data name="IncidentalCosts" xml:space="preserve">
     <value>حادثاتی اخراجات</value>
+  </data>
+  <data name="LanguageChangeMsg" xml:space="preserve">
+    <value>مکمل تبدیلیاں اگلا دوبارہ شروع کرنے پر اثر ڈالیں گے!</value>
   </data>
   <data name="SelectEngineDisplacement" xml:space="preserve">
     <value>انجکشن منتخب کریں</value>
   </data>
   <data name="SelectLanguage" xml:space="preserve">
     <value>زبان منتخب کریں</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>ترتیبات</value>
+  </data>
+  <data name="VehicleTax" xml:space="preserve">
+    <value>گاڑیاں ٹیکس</value>
   </data>
 </root>

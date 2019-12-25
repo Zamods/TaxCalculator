@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Shell xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TaxCalculator.MasterDetailShell.AppShell"
+       xmlns:view="clr-namespace:TaxCalculator">
+    <Shell.FlyoutHeader>
+        <StackLayout>
+            <Frame HeightRequest="150" BackgroundColor="#89cff0" CornerRadius="0" HasShadow="False">
+                <StackLayout Orientation="Horizontal" >
+                    <Image Source="Logo.png" Aspect="AspectFit" HeightRequest="100" />
+                    <Label Text="Tax Calculator" Style="{StaticResource Heading}" VerticalOptions="Center" TextColor="White"/>
+                </StackLayout>
+            </Frame>
+            <BoxView BackgroundColor="White" HeightRequest="1" VerticalOptions="Start"/>
+        </StackLayout>
+    </Shell.FlyoutHeader>
+    <FlyoutItem Title="Home" Icon="Home.png">
+        <Tab>
+            <ShellContent >
+                <view:MainPage/>
+            </ShellContent>
+        </Tab>
+    </FlyoutItem>
+    
+</Shell>

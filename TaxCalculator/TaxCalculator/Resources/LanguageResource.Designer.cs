@@ -61,6 +61,15 @@ namespace TaxCalculator.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to About.
+        /// </summary>
+        public static string About {
+            get {
+                return ResourceManager.GetString("About", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Brand New?.
         /// </summary>
         public static string BrandNew {
@@ -97,11 +106,29 @@ namespace TaxCalculator.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Home.
+        /// </summary>
+        public static string Home {
+            get {
+                return ResourceManager.GetString("Home", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Incidental Costs.
         /// </summary>
         public static string IncidentalCosts {
             get {
                 return ResourceManager.GetString("IncidentalCosts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Full Changes will take effect on next restart!.
+        /// </summary>
+        public static string LanguageChangeMsg {
+            get {
+                return ResourceManager.GetString("LanguageChangeMsg", resourceCulture);
             }
         }
         
@@ -120,6 +147,24 @@ namespace TaxCalculator.Resources {
         public static string SelectLanguage {
             get {
                 return ResourceManager.GetString("SelectLanguage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Settings.
+        /// </summary>
+        public static string Settings {
+            get {
+                return ResourceManager.GetString("Settings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vehicle Tax.
+        /// </summary>
+        public static string VehicleTax {
+            get {
+                return ResourceManager.GetString("VehicleTax", resourceCulture);
             }
         }
     }
